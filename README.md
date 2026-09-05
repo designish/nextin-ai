@@ -1,33 +1,43 @@
-# NextIn AI v2
+# NextIn
 
-## What changed
-This version uses a real backend instead of browser-only rules.
+NextIn is a conversational, voice-assisted AI opportunity agent for experienced professionals who are retiring, recently retired, or deciding how they want to contribute next.
 
-- Real AI conversation via OpenAI Responses API
-- Conversation context retained in the browser session
-- Structured Experience Profile
-- Voice message recording with MediaRecorder
-- Audio transcription via gpt-4o-mini-transcribe
-- Optional spoken AI replies via gpt-4o-mini-tts
-- English (India), Hindi, Marathi UI language selection
-- AI can recommend only from a fixed synthetic opportunity dataset
-- Inferred skills remain separate until the user confirms them
-- Reset genuinely clears the session
+## What the MVP does
+- Speak or type naturally
+- AI remembers context and avoids repeating questions
+- Builds a structured Experience Profile
+- Separates stated facts from inferred strengths
+- Recommends only opportunities from a fixed structured dataset
+- Explains why an opportunity fits
+- Supports English (India), Hindi and Marathi
+- Voice messages are transcribed before sending so the user can correct them
+- Optional spoken AI replies
+- Generates a professional introduction when the user is interested
+- Simulates a safe send-interest / connection state
 
-## You need an API key
-A ChatGPT subscription and OpenAI API billing are separate. Do not put your API key in frontend code.
+## Architecture
+Frontend: static HTML/JS in `public/index.html`
 
-## Run
-1. Install Node.js 20+
-2. In this folder run: npm install
-3. Copy .env.example to .env
-4. Add your OPENAI_API_KEY
-5. Run: npm start
-6. Open http://localhost:3000
-7. Allow microphone permission
+Serverless API routes:
+- `api/chat.js` — conversational AI + profile extraction + recommendations
+- `api/transcribe.js` — voice transcription
+- `api/speak.js` — spoken AI replies
+- `api/health.js` — backend/API-key health check
 
-## Why localhost
-Microphone APIs require a secure context. localhost qualifies, while simply opening an HTML file often does not.
+Hosting: Vercel
 
-## Later
-For true continuous speech-to-speech, migrate the voice layer to the OpenAI Realtime API over WebRTC. Keep the structured profile and opportunity matching architecture.
+AI: OpenAI API
+
+## Environment variables
+Add these in Vercel Project Settings → Environment Variables:
+
+`OPENAI_API_KEY=...`
+
+Optional:
+
+`OPENAI_MODEL=gpt-4.1-mini`
+
+Never commit a real API key to GitHub.
+
+## Product principle
+Low friction to discover, higher trust as commitment increases. AI-generated profiles are representations, not proof. Inferred skills require user confirmation.
